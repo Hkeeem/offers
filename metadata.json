@@ -1,0 +1,12 @@
+{
+  "name": "Remix مساعد التوفير الذكي | Smart Deal AI",
+  "description": "تطبيق سعودي متقدم لمقارنة الأسعار، تجميع العروض، وتحسين السلال الشرائية عبر المتاجر في المملكة بالذكاء الاصطناعي",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
