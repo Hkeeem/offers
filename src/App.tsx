@@ -36,6 +36,8 @@ import { HkeemLogo } from './components/HkeemLogo.tsx';
 import { CheaperAlternativeModal } from './components/CheaperAlternativeModal.tsx';
 import { VoiceAssistantModal } from './components/VoiceAssistantModal.tsx';
 import { VoiceFloatingTrigger } from './components/VoiceFloatingTrigger.tsx';
+// ===== استيراد قسم أدوات الذكاء الاصطناعي =====
+import { AiToolsHub } from './components/AiToolsHub.tsx';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<
@@ -71,12 +73,12 @@ export default function App() {
 
   // سلة المشتريات الافتراضية لعائلة سعودية
   const [cart, setCart] = useState<CartItem[]>([
-    { productId: 'p1', quantity: 2 }, // حليب المراعي 2 لتر
-    { productId: 'p2', quantity: 1 }, // أرز الشعلان 5 كجم
-    { productId: 'p3', quantity: 2 }, // زيت عافية 1.5 لتر
-    { productId: 'p4', quantity: 1 }, // طبق بيض الوطنية
-    { productId: 'p6', quantity: 2 }, // دجاج التنمية مبرد
-    { productId: 'p7', quantity: 1 }, // مسحوق أريال 5 كجم
+    { productId: 'p1', quantity: 2 },
+    { productId: 'p2', quantity: 1 },
+    { productId: 'p3', quantity: 2 },
+    { productId: 'p4', quantity: 1 },
+    { productId: 'p6', quantity: 2 },
+    { productId: 'p7', quantity: 1 },
   ]);
 
   // حالة المفضلة وتنبيهات الأسعار والإشعارات
@@ -119,7 +121,6 @@ export default function App() {
           }
         }
       } catch (_) {
-        // الاعتماد السلس على الحساب المحلي دون إطلاق أخطاء
       } finally {
         if (isMounted) setIsAiLoading(false);
       }
@@ -179,7 +180,6 @@ export default function App() {
     });
   }, [cart, favorites]);
 
-  // تبديل إضافة/إزالة المنتج من المفضلة
   const handleToggleFavorite = useCallback((productId: string) => {
     setFavorites(prev => {
       const isFav = prev.includes(productId);
@@ -189,7 +189,6 @@ export default function App() {
     });
   }, []);
 
-  // تعديل السعر المستهدف لتنبيه منتج
   const handleSetAlertTargetPrice = useCallback((productId: string, targetPrice: number) => {
     setAlerts(prev => {
       const updated = prev.map(a => (a.productId === productId ? { ...a, targetPriceSar: targetPrice } : a));
@@ -198,7 +197,6 @@ export default function App() {
     });
   }, []);
 
-  // تفعيل/تعطيل التنبيه
   const handleToggleAlertEnabled = useCallback((productId: string) => {
     setAlerts(prev => {
       const updated = prev.map(a => (a.productId === productId ? { ...a, isEnabled: !a.isEnabled } : a));
@@ -207,7 +205,6 @@ export default function App() {
     });
   }, []);
 
-  // تمييز الإشعار كمقروء
   const handleMarkNotificationAsRead = useCallback((id: string) => {
     setNotifications(prev => {
       const updated = prev.map(n => (n.id === id ? { ...n, isRead: true } : n));
@@ -216,7 +213,6 @@ export default function App() {
     });
   }, []);
 
-  // تمييز جميع الإشعارات كمقروءة
   const handleMarkAllNotificationsAsRead = useCallback(() => {
     setNotifications(prev => {
       const updated = prev.map(n => ({ ...n, isRead: true }));
@@ -225,13 +221,11 @@ export default function App() {
     });
   }, []);
 
-  // مسح سجل الإشعارات
   const handleClearNotifications = useCallback(() => {
     setNotifications([]);
     saveStoredNotifications([]);
   }, []);
 
-  // محاكاة فورية لهبوط سعر منتج في السلة أو المفضلة لإظهار التنبيه الذكي للمستخدم
   const handleSimulatePriceDrop = useCallback(() => {
     const cartOrFavIds = Array.from(new Set([...cart.map(c => c.productId), ...favorites]));
     const candidateProducts = SAUDI_PRODUCTS.filter(p => cartOrFavIds.includes(p.id));
@@ -320,15 +314,15 @@ export default function App() {
   const handleLoadPreset = (presetType: 'family' | 'essentials' | 'ramadan') => {
     if (presetType === 'family') {
       setCart([
-        { productId: 'p1', quantity: 3 }, // حليب المراعي 2 لتر
-        { productId: 'p2', quantity: 2 }, // أرز الشعلان 5 كجم
-        { productId: 'p3', quantity: 2 }, // زيت عافية
-        { productId: 'p4', quantity: 2 }, // بيض الوطنية
-        { productId: 'p5', quantity: 1 }, // سكر الأسرة 5 كجم
-        { productId: 'p6', quantity: 4 }, // دجاج التنمية
-        { productId: 'p7', quantity: 1 }, // أريال 5 كجم
-        { productId: 'p8', quantity: 2 }, // شاي ربيع
-        { productId: 'p10', quantity: 2 }, // مناديل كلينكس
+        { productId: 'p1', quantity: 3 },
+        { productId: 'p2', quantity: 2 },
+        { productId: 'p3', quantity: 2 },
+        { productId: 'p4', quantity: 2 },
+        { productId: 'p5', quantity: 1 },
+        { productId: 'p6', quantity: 4 },
+        { productId: 'p7', quantity: 1 },
+        { productId: 'p8', quantity: 2 },
+        { productId: 'p10', quantity: 2 },
       ]);
     } else if (presetType === 'essentials') {
       setCart([
@@ -340,7 +334,6 @@ export default function App() {
     }
   };
 
-  // استبدال منتج في السلة بمنتج بديل صحي مع الحفاظ على الكمية
   const handleSwapProductInCart = (oldProductId: string, newProductId: string) => {
     setCart(prev => {
       const existing = prev.find(item => item.productId === oldProductId);
@@ -363,7 +356,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col selection:bg-emerald-500 selection:text-white">
-      {/* رأس التطبيق والشريط العلوي مع هوية حكيم AI واختيار المدينة وتصفية فئات المتاجر */}
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -387,9 +379,7 @@ export default function App() {
         onOpenVoiceAssistant={() => setIsVoiceModalOpen(true)}
       />
 
-      {/* المحتوى الرئيسي للمنصة */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
-        {/* شريط تنبيه الفلترة النشطة لفئات المتاجر */}
         {selectedStoreCategory !== 'all' && (
           <div
             id="active-category-filter-banner"
@@ -443,7 +433,6 @@ export default function App() {
           />
         )}
 
-        {/* تبويب القائمة السريعة الجديد */}
         {activeTab === 'quicklist' && (
           <QuickListView
             products={SAUDI_PRODUCTS}
@@ -455,7 +444,6 @@ export default function App() {
           />
         )}
 
-        {/* تبويب البحث بالصور عبر Google Cloud Vision API */}
         {activeTab === 'image-search' && (
           <ImageSearchView
             products={SAUDI_PRODUCTS}
@@ -467,14 +455,12 @@ export default function App() {
           />
         )}
 
-        {/* تبويب بوتات حكيم الذكية (الشريطي، الوسيط العقاري، رادار العروض، صياد الكوبونات) */}
         {activeTab === 'bots' && (
           <SmartBotsView
             onNavigateTab={setActiveTab}
           />
         )}
 
-        {/* تبويب تنبيهات الأسعار والمفضلة */}
         {activeTab === 'alerts' && (
           <PriceAlertsWishlistView
             products={SAUDI_PRODUCTS}
@@ -578,71 +564,9 @@ export default function App() {
         {activeTab === 'schema' && <ArchitectureView />}
       </main>
 
-      {/* نافذة تفاصيل المنتج والبدائل الصحية وسجل الأسعار المنبثقة */}
-      {selectedChartProduct && (
-        <ProductDetailModal
-          product={selectedChartProduct}
-          products={SAUDI_PRODUCTS}
-          stores={filteredStores}
-          cart={cart}
-          onClose={() => setSelectedChartProduct(null)}
-          onAddToCart={handleAddToCart}
-          onSwapProductInCart={handleSwapProductInCart}
-        />
-      )}
+      {/* ===== قسم أدوات الذكاء الاصطناعي وشكر وتقدير ===== */}
+      <AiToolsHub />
 
-      {/* توست إشعار هبوط السعر المنبثق */}
-      <PriceAlertToast
-        notification={currentToast}
-        onClose={() => setCurrentToast(null)}
-        onAddToCart={(prodId) => {
-          handleAddToCart(prodId);
-          setCurrentToast(null);
-        }}
-        onViewAlerts={() => {
-          setCurrentToast(null);
-          setActiveTab('alerts');
-        }}
-        onViewCheaperAlternative={(notif) => {
-          setSelectedToastAlternative(notif);
-          setCurrentToast(null);
-        }}
-      />
-
-      {/* نافذة البديل الأوفر إذا فُتحت عبر التوست السريع */}
-      {selectedToastAlternative && (
-        <CheaperAlternativeModal
-          isOpen={!!selectedToastAlternative}
-          onClose={() => setSelectedToastAlternative(null)}
-          notification={selectedToastAlternative}
-          products={SAUDI_PRODUCTS}
-          stores={SAUDI_STORES}
-          cart={cart}
-          onAddToCart={handleAddToCart}
-          onSwapProductInCart={handleSwapProductInCart}
-          onNavigateTab={setActiveTab}
-        />
-      )}
-
-      {/* الزر العائم للأوامر الصوتية Web Speech API */}
-      <VoiceFloatingTrigger onClick={() => setIsVoiceModalOpen(true)} />
-
-      {/* نافذة المساعد الصوتي التفاعلي للتعرف على الكلام */}
-      <VoiceAssistantModal
-        isOpen={isVoiceModalOpen}
-        onClose={() => setIsVoiceModalOpen(false)}
-        products={SAUDI_PRODUCTS}
-        stores={SAUDI_STORES}
-        cart={cart}
-        onAddToCart={handleAddToCart}
-        onSearch={(query) => {
-          setActiveTab('matrix');
-        }}
-        onNavigateTab={setActiveTab}
-        onClearCart={handleClearCart}
-      />
-
-      {/* التذييل الرسمي المدمج مع alhkmystore.lovable.app */}
       <footer className="bg-white border-t border-slate-200 py-8 px-4 text-xs text-slate-500 mt-auto">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-100">
@@ -698,4 +622,4 @@ export default function App() {
       </footer>
     </div>
   );
-}
+                   }
