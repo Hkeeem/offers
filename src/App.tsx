@@ -37,7 +37,7 @@ import { CheaperAlternativeModal } from './components/CheaperAlternativeModal.ts
 import { VoiceAssistantModal } from './components/VoiceAssistantModal.tsx';
 import { VoiceFloatingTrigger } from './components/VoiceFloatingTrigger.tsx';
 // ===== استيراد قسم أدوات الذكاء الاصطناعي =====
-import { AiToolsHub } from './components/AiToolsHub.tsx';
+import AiToolsHub from './components/AiToolsHub.tsx';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<
@@ -622,4 +622,4 @@ export default function App() {
       </footer>
     </div>
   );
-                   }
+        }
