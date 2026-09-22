@@ -12,9 +12,7 @@ import {
   Heart, 
   Award, 
   Terminal,
-  Cpu,
-  Bot,
-  CheckCircle2
+  Cpu
 } from 'lucide-react';
 
 // ==========================================
@@ -26,7 +24,7 @@ const globalAiTools = [
     description: 'منصة حكيم AI الذكية — عروض، مقارنة أسعار، سيارات، عقارات، وأدوات ذكاء اصطناعي',
     url: 'https://alhkmy.app',
     color: 'from-amber-400 via-yellow-400 to-amber-500',
-    icon: <Rocket className="w-6 h-6" />,
+    icon: <Rocket className="w-8 h-8" />,
     isFeatured: true,
   },
   {
@@ -88,18 +86,18 @@ const globalAiTools = [
 ];
 
 // ==========================================
-// 2. قائمة الجهات التي ساهمت في البناء
+// 2. قائمة الجهات التي ساهمت في البناء (بدون DeepSeek)
 // ==========================================
 const contributors = [
-  { name: 'Google AI Studio', icon: <Terminal className="w-4 h-4" /> },
-  { name: 'Gemini', icon: <Sparkles className="w-4 h-4" /> },
-  { name: 'ChatGPT', icon: <MessageSquare className="w-4 h-4" /> },
-  { name: 'Claude', icon: <Brain className="w-4 h-4" /> },
-  { name: 'Meta AI', icon: <Globe className="w-4 h-4" /> },
-  { name: 'Genspark', icon: <Search className="w-4 h-4" /> },
-  { name: 'Grok', icon: <Zap className="w-4 h-4" /> },
-  { name: 'Vercel', icon: <Rocket className="w-4 h-4" /> },
-  { name: 'GitHub', icon: <Cpu className="w-4 h-4" /> },
+  { name: 'Google AI Studio', icon: <Terminal className="w-5 h-5" /> },
+  { name: 'Gemini', icon: <Sparkles className="w-5 h-5" /> },
+  { name: 'ChatGPT', icon: <MessageSquare className="w-5 h-5" /> },
+  { name: 'Claude', icon: <Brain className="w-5 h-5" /> },
+  { name: 'Meta AI', icon: <Globe className="w-5 h-5" /> },
+  { name: 'Genspark', icon: <Search className="w-5 h-5" /> },
+  { name: 'Grok', icon: <Zap className="w-5 h-5" /> },
+  { name: 'Vercel', icon: <Rocket className="w-5 h-5" /> },
+  { name: 'GitHub', icon: <Cpu className="w-5 h-5" /> },
 ];
 
 // ==========================================
@@ -118,7 +116,7 @@ export default function AiToolsHub() {
               <span className="font-bold">مركز الأدوات الذكية</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3">
-              🌐 أدوات الذكاء الاصطناعي العالمية
+              أدوات الذكاء الاصطناعي العالمية
             </h2>
             <p className="text-slate-600 text-lg max-w-2xl mx-auto">
               اختر أداتك المفضلة وابدأ الإبداع مباشرة — كل الأدوات في مكان واحد
@@ -204,13 +202,10 @@ export default function AiToolsHub() {
               <span className="font-bold">شكر وتقدير</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-3">
-              🤝 شكر وتقدير
+              شكر وتقدير
             </h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
-              تم إنجاز هذا التطبيق في فترة وجيزة بفضل الله ثم بمساعدة:
-            </p>
-            <p className="text-slate-700 text-base md:text-lg font-semibold mt-3 leading-relaxed">
-              منصة <span className="text-emerald-700 font-black">alhkmy.store</span> وتطبيق <span className="text-amber-700 font-black">alhkmy.app</span> بإدارة <span className="text-emerald-700 font-black">حكيم AI</span> ونائبه <span className="text-blue-700 font-black">Gemini</span>، وكلاً من:
+            <p className="text-slate-700 text-base md:text-lg font-semibold mt-3 leading-relaxed max-w-3xl mx-auto">
+              تم العمل على منصتنا <span className="text-emerald-700 font-black">alhkmy.store</span> وتطبيق <span className="text-amber-700 font-black">alhkmy.app</span> بإدارة <span className="text-emerald-700 font-black">حكيم AI</span> ونائبه <span className="text-blue-700 font-black">Gemini</span>، وكلاً من:
             </p>
           </div>
 
