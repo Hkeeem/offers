@@ -106,7 +106,7 @@ export default function AiToolsHub() {
       <div className="max-w-7xl mx-auto">
 
         {/* ============================================ */}
-        {/* ========== القسم العلوي: شارك في البناء ====== */}
+        {/* ========== القسم الأول: شارك في البناء ======= */}
         {/* ============================================ */}
         <div className="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 rounded-3xl p-6 md:p-10 shadow-2xl mb-16 overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -117,7 +117,6 @@ export default function AiToolsHub() {
             </h2>
           </div>
 
-          {/* شبكة المساهمين - صف واحد فقط لتجنب التكرار */}
           <div className="relative z-10 flex flex-wrap justify-center gap-2 md:gap-3">
             {contributors.map((contributor, index) => (
               <div
@@ -140,7 +139,7 @@ export default function AiToolsHub() {
         </div>
 
         {/* ============================================ */}
-        {/* ========== قسم أدوات الذكاء الاصطناعي ======== */}
+        {/* ========== القسم الثاني: أدوات الذكاء الاصطناعي ====== */}
         {/* ============================================ */}
         <div className="mb-16">
           <div className="text-center mb-12">
@@ -152,7 +151,6 @@ export default function AiToolsHub() {
             </p>
           </div>
 
-          {/* شبكة الأيقونات فقط (بدون أسماء) */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {globalAiTools.map((tool, index) => (
               <a
@@ -186,7 +184,7 @@ export default function AiToolsHub() {
         </div>
 
         {/* ============================================ */}
-        {/* ========== القسم السفلي: إخراج وتنفيذ ======== */}
+        {/* ========== القسم الثالث: إخراج وتنفيذ ======== */}
         {/* ============================================ */}
         <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 rounded-3xl p-8 md:p-12 shadow-2xl border-2 border-emerald-700">
           <div className="text-center mb-8">
