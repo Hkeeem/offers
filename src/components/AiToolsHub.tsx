@@ -20,72 +20,63 @@ import {
 } from 'lucide-react';
 
 // ==========================================
-// 1. أدوات الذكاء الاصطناعي العالمية
+// 1. أدوات الذكاء الاصطناعي العالمية (أيقونات فقط)
 // ==========================================
 const globalAiTools = [
   {
     name: 'Alhkmy.app',
-    description: 'منصة حكيم AI الذكية — عروض، مقارنة أسعار، سيارات، عقارات، وأدوات ذكاء اصطناعي',
     url: 'https://alhkmy.app',
     color: 'from-amber-400 via-yellow-400 to-amber-500',
-    icon: <Rocket className="w-8 h-8" />,
+    icon: <Rocket className="w-10 h-10" />,
     isFeatured: true,
   },
   {
     name: 'Gemini',
-    description: 'مساعد جوجل الذكي',
     url: 'https://gemini.google.com',
     color: 'from-blue-500 to-purple-500',
-    icon: <Sparkles className="w-6 h-6" />,
+    icon: <Sparkles className="w-8 h-8" />,
   },
   {
     name: 'ChatGPT',
-    description: 'مساعد OpenAI',
     url: 'https://chat.openai.com',
     color: 'from-emerald-500 to-teal-500',
-    icon: <MessageSquare className="w-6 h-6" />,
+    icon: <MessageSquare className="w-8 h-8" />,
   },
   {
     name: 'Claude',
-    description: 'مساعد Anthropic',
     url: 'https://claude.ai',
     color: 'from-orange-500 to-amber-500',
-    icon: <Brain className="w-6 h-6" />,
+    icon: <Brain className="w-8 h-8" />,
   },
   {
     name: 'Meta AI',
-    description: 'مساعد ميتا الذكي',
     url: 'https://www.meta.ai',
     color: 'from-blue-600 to-indigo-600',
-    icon: <Globe className="w-6 h-6" />,
+    icon: <Globe className="w-8 h-8" />,
   },
   {
     name: 'Grok',
-    description: 'مساعد xAI',
     url: 'https://grok.com',
     color: 'from-slate-700 to-slate-900',
-    icon: <Zap className="w-6 h-6" />,
+    icon: <Zap className="w-8 h-8" />,
   },
   {
     name: 'Genspark',
-    description: 'محرك بحث ذكي',
     url: 'https://www.genspark.ai',
     color: 'from-pink-500 to-rose-500',
-    icon: <Search className="w-6 h-6" />,
+    icon: <Search className="w-8 h-8" />,
   },
   {
     name: 'Perplexity',
-    description: 'بحث بالذكاء الاصطناعي',
     url: 'https://www.perplexity.ai',
     color: 'from-cyan-500 to-blue-500',
-    icon: <Search className="w-6 h-6" />,
+    icon: <Search className="w-8 h-8" />,
   },
   {
     name: 'Google AI Studio',
-    description: 'استوديو بناء التطبيقات',
     url: 'https://aistudio.google.com',
     color: 'from-amber-500 to-orange-500',
-    icon: <Terminal className="w-6 h-6" />,
+    icon: <Terminal className="w-8 h-8" />,
   },
 ];
 
@@ -120,8 +111,6 @@ export default function AiToolsHub() {
         {/* ========== القسم العلوي: فريق البناء ========= */}
         {/* ============================================ */}
         <div className="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 rounded-3xl p-8 md:p-12 shadow-2xl mb-16 overflow-hidden">
-
-          {/* خلفية زخرفية */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
@@ -172,10 +161,11 @@ export default function AiToolsHub() {
               أدوات الذكاء الاصطناعي العالمية
             </h2>
             <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-              اختر أداتك المفضلة وابدأ الإبداع مباشرة — كل الأدوات في مكان واحد
+              اضغط على أي أيقونة للدخول إلى الأداة مباشرة
             </p>
           </div>
 
+          {/* شبكة الأيقونات فقط (بدون كتابة) */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {globalAiTools.map((tool, index) => (
               <a
@@ -183,11 +173,12 @@ export default function AiToolsHub() {
                 href={tool.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                title={tool.name}
                 className={`
-                  group relative bg-white rounded-2xl p-6 shadow-sm 
-                  transition-all duration-300 transform hover:-translate-y-2
+                  group relative flex items-center justify-center p-8 rounded-2xl bg-white shadow-sm 
+                  transition-all duration-300 transform hover:-translate-y-2 cursor-pointer
                   ${tool.isFeatured 
-                    ? 'col-span-2 row-span-2 border-2 border-amber-400 shadow-xl shadow-amber-100 ring-2 ring-amber-200/50' 
+                    ? 'col-span-2 row-span-2 border-4 border-amber-400 shadow-xl shadow-amber-100 ring-4 ring-amber-200/50' 
                     : 'border-2 border-transparent hover:border-emerald-400 hover:shadow-xl'
                   }
                 `}
@@ -199,38 +190,9 @@ export default function AiToolsHub() {
                   </div>
                 )}
 
-                {tool.isFeatured ? (
-                  <div className="flex flex-col justify-between h-full">
-                    <div>
-                      <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${tool.color} flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-105 transition-transform`}>
-                        {tool.icon}
-                      </div>
-                      <h3 className="font-black text-2xl md:text-3xl mb-3 text-amber-700">
-                        {tool.name}
-                      </h3>
-                      <p className="text-slate-600 text-base md:text-lg mb-6 leading-relaxed">
-                        {tool.description}
-                      </p>
-                    </div>
-                    <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-bold text-lg py-3 px-6 rounded-xl shadow-md group-hover:shadow-lg transition-all">
-                      <Rocket className="w-5 h-5" />
-                      <span>جرّب التطبيق الآن</span>
-                      <ExternalLink className="w-5 h-5" />
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center text-white mb-4 shadow-md group-hover:scale-110 transition-transform`}>
-                      {tool.icon}
-                    </div>
-                    <h3 className="font-bold text-lg mb-1 text-slate-900">{tool.name}</h3>
-                    <p className="text-slate-500 text-sm mb-3">{tool.description}</p>
-                    <div className="flex items-center gap-1 font-semibold text-sm text-emerald-600 group-hover:gap-2 transition-all">
-                      <span>افتح الأداة</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </div>
-                  </>
-                )}
+                <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${tool.color} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}>
+                  {tool.icon}
+                </div>
               </a>
             ))}
           </div>
