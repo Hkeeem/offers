@@ -81,10 +81,9 @@ const globalAiTools = [
 ];
 
 // ==========================================
-// 2. قائمة جميع الجهات والمساهمين في البناء
+// 2. قائمة المساهمين (بدون "حكيم AI")
 // ==========================================
 const contributors = [
-  { name: 'حكيم AI', icon: <Bot className="w-5 h-5" />, color: 'text-emerald-600' },
   { name: 'Gemini', icon: <Sparkles className="w-5 h-5" />, color: 'text-blue-600' },
   { name: 'ChatGPT', icon: <MessageSquare className="w-5 h-5" />, color: 'text-emerald-600' },
   { name: 'Claude', icon: <Brain className="w-5 h-5" />, color: 'text-orange-600' },
@@ -114,17 +113,15 @@ export default function AiToolsHub() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-400/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
+          {/* العنوان فقط بدون النص الطويل */}
           <div className="relative z-10 text-center mb-10">
             <div className="inline-flex items-center gap-2 bg-amber-400 text-slate-900 px-6 py-2 rounded-full mb-4 shadow-lg">
               <Users className="w-5 h-5" />
               <span className="font-black">فريق البناء</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
               شارك في بناء منصة حكيم AI العصرية
             </h2>
-            <p className="text-emerald-100 text-lg max-w-2xl mx-auto leading-relaxed">
-              تم إنجاز هذا العمل في فترة وجيزة بفضل الله ثم بتعاون نخبة من أقوى أدوات الذكاء الاصطناعي والمنصات العالمية
-            </p>
           </div>
 
           <div className="relative z-10 flex flex-wrap justify-center gap-3 md:gap-4">
@@ -165,7 +162,7 @@ export default function AiToolsHub() {
             </p>
           </div>
 
-          {/* شبكة الأيقونات فقط (بدون كتابة) */}
+          {/* شبكة الأيقونات فقط */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {globalAiTools.map((tool, index) => (
               <a
