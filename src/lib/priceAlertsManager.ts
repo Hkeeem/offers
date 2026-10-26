@@ -1,8 +1,11 @@
-import { Product, Store, CartItem, PriceAlert, PriceAlertNotification } from '../types.ts';
+import { Product, Store, PriceAlert, PriceAlertNotification } from '../types.ts';
 
 const STORAGE_KEY_FAVORITES = 'hakeem_favorites_v1';
 const STORAGE_KEY_ALERTS = 'hakeem_price_alerts_v1';
 const STORAGE_KEY_NOTIFICATIONS = 'hakeem_price_notifications_v1';
+
+// الحد الأقصى للإشعارات المحفوظة حتى لا يمتلئ التخزين المحلي
+const MAX_STORED_NOTIFICATIONS = 100;
 
 export const INITIAL_FAVORITES: string[] = ['p1', 'p2', 'p3'];
 
@@ -45,72 +48,86 @@ export const INITIAL_NOTIFICATIONS: PriceAlertNotification[] = [
   }
 ];
 
-export function getStoredFavorites(): string[] {
+// ===== أدوات التخزين المحلي الآمنة =====
+
+function hasStorage(): boolean {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_FAVORITES);
-    if (raw) {
-      return JSON.parse(raw);
-    }
+    return typeof localStorage !== 'undefined';
   } catch {
-    // fallback
+    // الوصول إلى localStorage قد يرمي خطأ في وضع الخصوصية
+    return false;
   }
-  return INITIAL_FAVORITES;
+}
+
+// قراءة مصفوفة من التخزين، وترجع null إذا لم توجد أو كانت تالفة أو ليست مصفوفة
+function readArray<T>(key: string): T[] | null {
+  if (!hasStorage()) return null;
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as T[]) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeValue(key: string, value: unknown): void {
+  if (!hasStorage()) return;
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // التخزين ممتلئ أو غير متاح: نتجاهل بصمت
+  }
+}
+
+export function getStoredFavorites(): string[] {
+  const stored = readArray<unknown>(STORAGE_KEY_FAVORITES);
+  if (stored) {
+    return stored.filter((id): id is string => typeof id === 'string');
+  }
+  return [...INITIAL_FAVORITES];
 }
 
 export function saveStoredFavorites(favs: string[]): void {
-  try {
-    localStorage.setItem(STORAGE_KEY_FAVORITES, JSON.stringify(favs));
-  } catch {
-    // fallback
-  }
+  writeValue(STORAGE_KEY_FAVORITES, favs);
 }
 
 export function getStoredAlerts(): PriceAlert[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_ALERTS);
-    if (raw) {
-      return JSON.parse(raw);
-    }
-  } catch {
-    // fallback
-  }
-  return [];
+  return readArray<PriceAlert>(STORAGE_KEY_ALERTS) ?? [];
 }
 
 export function saveStoredAlerts(alerts: PriceAlert[]): void {
-  try {
-    localStorage.setItem(STORAGE_KEY_ALERTS, JSON.stringify(alerts));
-  } catch {
-    // fallback
-  }
+  writeValue(STORAGE_KEY_ALERTS, alerts);
 }
 
 export function getStoredNotifications(): PriceAlertNotification[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_NOTIFICATIONS);
-    if (raw) {
-      return JSON.parse(raw);
-    }
-  } catch {
-    // fallback
-  }
-  return INITIAL_NOTIFICATIONS;
+  const stored = readArray<PriceAlertNotification>(STORAGE_KEY_NOTIFICATIONS);
+  if (stored) return stored;
+  // نسخة جديدة حتى لا يعدّل أحد الثابت INITIAL_NOTIFICATIONS بالخطأ
+  return INITIAL_NOTIFICATIONS.map((n) => ({ ...n }));
 }
 
 export function saveStoredNotifications(notifs: PriceAlertNotification[]): void {
-  try {
-    localStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify(notifs));
-  } catch {
-    // fallback
-  }
+  // الأحدث أولاً في التطبيق، لذلك نبقي أول العناصر ونقصّ الزائد
+  writeValue(STORAGE_KEY_NOTIFICATIONS, notifs.slice(0, MAX_STORED_NOTIFICATIONS));
 }
 
 // تشغيل صوت تنبيه خفيف لطيف عند هبوط السعر عبر Web Audio API
 export function playChimeSound(): void {
   try {
-    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (typeof window === 'undefined') return;
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!AudioContextClass) return;
+
     const ctx = new AudioContextClass();
+    // بعض المتصفحات تبدأ السياق في وضع التعليق
+    if (ctx.state === 'suspended') {
+      void ctx.resume().catch(() => {});
+    }
+
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
@@ -124,10 +141,15 @@ export function playChimeSound(): void {
     osc.connect(gain);
     gain.connect(ctx.destination);
 
+    // إغلاق السياق بعد انتهاء الصوت لتفادي حد المتصفح لعدد السياقات المفتوحة
+    osc.onended = () => {
+      void ctx.close().catch(() => {});
+    };
+
     osc.start();
     osc.stop(ctx.currentTime + 0.36);
   } catch {
-    // Audio might be blocked by user gesture policies, fail silently
+    // قد يمنع المتصفح الصوت قبل تفاعل المستخدم، نتجاهل بصمت
   }
 }
 
@@ -135,6 +157,8 @@ export function playChimeSound(): void {
 export async function requestBrowserNotificationPermission(): Promise<boolean> {
   if (typeof window !== 'undefined' && 'Notification' in window) {
     try {
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') return false;
       const permission = await Notification.requestPermission();
       return permission === 'granted';
     } catch {
@@ -154,7 +178,7 @@ export function sendBrowserNotification(title: string, body: string, icon?: stri
         lang: 'ar',
       });
     } catch {
-      // ignore
+      // بعض الأجهزة (مثل أندرويد) تتطلب Service Worker، نتجاهل بصمت
     }
   }
 }
@@ -164,13 +188,14 @@ export function getProductLowestPrice(product: Product, stores: Store[]): { lowe
   let min = Infinity;
   let bestStore: Store | null = null;
 
-  stores.forEach((store) => {
+  for (const store of stores) {
     const info = product.prices[store.id];
-    if (info && info.inStock && info.priceInclVat < min) {
+    // نتجاهل الأسعار غير الصالحة (صفر أو سالبة أو NaN)
+    if (info && info.inStock && info.priceInclVat > 0 && info.priceInclVat < min) {
       min = info.priceInclVat;
       bestStore = store;
     }
-  });
+  }
 
   return {
     lowestPrice: min === Infinity ? 0 : min,
